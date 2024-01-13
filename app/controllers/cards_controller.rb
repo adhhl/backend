@@ -59,6 +59,7 @@ class CardsController < ApplicationController
       @card.last_review = Time.zone.now
       FsrsService.new(@card).update_fsrs params[:card][:rating]
       @card.reps += 1
+      @card.save
     end
   end
 
