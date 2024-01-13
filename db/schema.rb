@@ -10,16 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_11_025858) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_13_151906) do
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "front"
     t.text "back"
     t.bigint "user_id", null: false
     t.bigint "deck_id", null: false
-    t.integer "status"
-    t.timestamp "next_review"
+    t.integer "rating"
+    t.datetime "next_review"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "stability", default: 0
+    t.integer "difficulty", default: 0
+    t.integer "reps", default: 0
+    t.integer "state", default: 0
+    t.string "dues_predict"
+    t.datetime "last_review"
     t.index ["deck_id"], name: "index_cards_on_deck_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
@@ -37,7 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_025858) do
 
   create_table "review_histories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id", null: false
-    t.integer "status"
+    t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_review_histories_on_card_id"

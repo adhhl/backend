@@ -13,4 +13,5 @@ Rails.application.routes.draw do
       resources :review_histories
     end
   end
+  get '/decks/:deck_id/cards_learn_today', to: 'cards#card_learn_today'
 end

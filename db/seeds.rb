@@ -24,5 +24,5 @@ end
 end
 
 100.times do
-  ReviewHistory.create!(card_id: rand(1..100), status: rand(0..3))
+  ReviewHistory.create!(card_id: rand(1..100), rating: rand(0..3))
 end

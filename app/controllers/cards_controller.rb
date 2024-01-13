@@ -19,11 +19,17 @@ class CardsController < ApplicationController
     render json: @cards
   end
 
+  def card_learn_today
+    @card = @deck.cards.learn_today
+    FsrsService.new(@card).get_due_predict
+    render json: @card
+  end
+
   # GET /cards/1
   # GET /cards/1.json
   def show
     @card_history = @card.review_histories
-    render json: {card: @card, card_history: @card_history}
+    render json: { card: @card, card_history: @card_history }
   end
 
   # POST /cards
@@ -47,6 +53,14 @@ class CardsController < ApplicationController
     else
       render json: @card.errors, status: :unprocessable_entity
     end
+
+    if params[:card][:rating]
+      @card.review_histories.create! rating: params[:card][:rating]
+      @card.last_review = Time.zone.now
+      FsrsService.new(@card).update_fsrs params[:card][:rating]
+      @card.reps += 1
+      @card.save
+    end
   end
 
   # DELETE /cards/1
@@ -64,7 +78,9 @@ class CardsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def card_params
-    params.require(:card).permit(:front, :back, :user_id, :deck_id, :status,
+    params.require(:card).permit(:front, :back, :user_id, :deck_id, :rating,
+                                 :state, :due, :stability, :difficulty, :reps,
+                                 :due_predict,
                                  :next_review)
   end
 
@@ -73,5 +89,24 @@ class CardsController < ApplicationController
     return unless @deck.user != current_user
 
     render json: {error: "Not Allowed"}, status: :forbidden
+  end
+
+  def convert_to_time duration
+    match_data = duration.match(/(\d+)\s*(second|minute|hour|day)s?/)
+    return nil unless match_data
+
+    quantity = match_data[1].to_i
+    unit = match_data[2].downcase
+
+    case unit
+    when "second"
+      quantity.seconds
+    when "minute"
+      quantity.minutes
+    when "hour"
+      quantity.hours
+    when "day"
+      quantity.days
+    end
   end
 end

@@ -5,8 +5,8 @@ class CreateCards < ActiveRecord::Migration[7.0]
       t.text :back
       t.references :user, null: false, foreign_key: true
       t.references :deck, null: false, foreign_key: true
-      t.integer :status
-      t.timestamp :next_review
+      t.integer :rating
+      t.datetime :next_review
 
       t.timestamps
     end
