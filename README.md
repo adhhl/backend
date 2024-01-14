@@ -1,6 +1,6 @@
-`<kbd>:blossom: backend</kbd>`
+<kbd>:blossom: backend</kbd>
 
-Backend for the [Unforget]() application. Powered by Ruby 3.2.2, Rails 7.0.8 and MySQL as database.
+Backend for the [Unforget]() application. Powered by Ruby on Rails.
 
 # Architecture
 
@@ -31,8 +31,8 @@ Backend for the [Unforget]() application. Powered by Ruby 3.2.2, Rails 7.0.8 and
     If you run the app locally, you should change the `DB_HOST` to "", also the `DB_USERNAME` and `DB_PASSWORD` to your local MySQL credentials.
     The socket path should be `/var/run/mysqld/mysqld.sock` for Linux and `/tmp/mysql.sock` for Mac.
     
-    > [!TIP]
-    > Run on Docker can keep the default values.
+> [!TIP]
+> Run on Docker can keep the default values.
      
 3. Install `bundle`
     ```sh
@@ -50,6 +50,7 @@ The server should be running on `localhost:3001` now.
 ```
 $ cp .env.example .env
 $ docker-compose up
-```****
+```
+
 # License
 Distributed under the MIT License. See `LICENSE` for more information.
