@@ -9,7 +9,6 @@ class FsrsService
 
   def update_fsrs rating
     hash_card = @cards.to_log_card_format
-    puts @cards.to_json
     rating_str = {0 => "Again", 1 => "Hard", 2 => "Good", 3 => "Easy"}
     hash_card["rating_now"]["rating"] = rating_str[rating.to_i]
     response = HTTParty.post @endpoint,
@@ -20,7 +19,7 @@ class FsrsService
     @cards.stability = card["stability"]
     @cards.difficulty = card["difficulty"]
     @cards.state = card["state"]
-    puts @cards.to_json
+    @cards.reps += 1
     @cards.save
   end
 
@@ -47,12 +46,11 @@ class FsrsService
   def time_left last_review, due
     time_diff = Time.zone.parse(due) - Time.zone.parse(last_review)
     seconds = time_diff.to_i
-    case
-    when seconds < 60
+    if seconds < 60
       "#{seconds} seconds"
-    when seconds < 3600
+    elsif seconds < 3600
       "#{(seconds / 60).to_i} minutes"
-    when seconds < 86_400
+    elsif seconds < 86_400
       "#{(seconds / 3600).to_i} hours"
     else
       "#{(seconds / 86_400).to_i} days"
